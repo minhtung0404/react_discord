@@ -53,6 +53,12 @@ class HelpCommand extends Command {
                         { name: 'Example', value: value.example, inline:true}
                     )
             }
+            if (typeof value.note !== 'undefined'){
+                embed = embed
+                    .addFields(
+                        { name: 'Note', value: value.note}
+                    );
+            }
             return message.channel.send(embed);
         }
         console.log('There is no such command');

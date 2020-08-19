@@ -48,6 +48,7 @@ class RemoveCommand extends Command {
 
     usage = '`remove [messageID = previous] [string]`';
     example = '`remove previous ngfamvodich`';
+    note = '`the command can be used only if the bot has MANAGE_MESSAGE permisson`\n`It also removes your command.`'
 
     async exec(message, args) {
         if (args.messageID == null || args.message === null){
