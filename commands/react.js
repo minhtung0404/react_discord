@@ -77,7 +77,7 @@ class ReactCommand extends Command {
                 m = undefined;
             });
             if (m == undefined) continue;
-            console.log(`Name of channel: ${channel.name}`);
+            console.log(`Name of channel: ${m.name}`);
             ok = true;
             break;
         }
