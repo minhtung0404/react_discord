@@ -3,7 +3,7 @@ const { AkairoClient, CommandHandler, InhibitorHandler, ListenerHandler } = requ
 class MyClient extends AkairoClient {
     constructor() {
         super({
-            ownerID: '270395891486162944',
+            ownerID: 'your ID goes here',
         }, {
             disableMentions: 'everyone'
         });
@@ -36,4 +36,4 @@ class MyClient extends AkairoClient {
 }
 
 const client = new MyClient();
-client.login('NzI3NzU1ODAzNjc4ODY3NDg3.XvwdaA.VtMszwxld9xdG2Vf6OzQlXtKGSQ');
+client.login('you token goes here');

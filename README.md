@@ -10,5 +10,5 @@
 
 ## How to use
 - Install all package in package-lock.json
-- Change your bot token
+- Change your bot token and your ID
 - Run `node index.js`
