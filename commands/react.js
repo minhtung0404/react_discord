@@ -55,22 +55,40 @@ class ReactCommand extends Command {
             return message.channel.send('Not enough arguments!!!');
         }
 
-        let m;
+        // convert previous to message ID
+        let m, ok = false;
         if (args.messageID === 'previous'){
             await message.channel.messages.fetch({limit: 2}).then(messages => {
                 for (let [key, value] of messages) args.messageID = key;
             }).catch(err => {
+                message.channel.send('Can\'t find the last message!!!');
                 throw err;
-                return message.channel.send('Can\'t find the last message!!!');
             });
         }
-        m = await message.channel.messages.fetch(args.messageID).catch(err => {
-            console.log('Can\'t find the message');
-            message.channel.send('Can\'t find the message');
-            throw err;
-        });
+        
+        //listed all channel that this member can access
+        const listedChannels = message.guild.channels.cache.filter(channel => 
+            channel.permissionsFor(message.author).has('VIEW_CHANNEL') && channel.type == 'text'
+        );
+        
+        //find the channel the message is on
+        for (let [ID, channel] of listedChannels){
+            m = await channel.messages.fetch(args.messageID).catch(err => {
+                m = undefined;
+            });
+            if (m == undefined) continue;
+            console.log(`Name of channel: ${channel.name}`);
+            ok = true;
+            break;
+        }
+        if (ok === false){
+            console.log(`Can\'t find the message`);
+            return message.channel.send(`Can\'t find the message`);
+        }
 
+        //remove all space and convert string to lowercase
         let str = await args.message.replace(/\s+/g, "");
+        str = str.toLowerCase();
 
         //check whether string is unique
         if (!checkForUnique(str)){

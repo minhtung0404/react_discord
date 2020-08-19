@@ -10,8 +10,6 @@ class HelpCommand extends Command {
                     id: 'commandID'
                 }
             ],
-            ownerOnly: true,
-            category: 'owner',
             description: "Show help"
         });
     }
