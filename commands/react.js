@@ -55,6 +55,8 @@ class ReactCommand extends Command {
             return message.channel.send('Not enough arguments!!!');
         }
 
+        let botUser = this.handler.client.user;
+
         // convert previous to message ID
         let m, ok = false;
         if (args.messageID === 'previous'){
@@ -65,10 +67,17 @@ class ReactCommand extends Command {
                 throw err;
             });
         }
+
+        //delete message
+        if (message.channel.permissionsFor(botUser).has('MANAGE_MESSAGE')){
+            message.delete();
+            console.log(`Message deleted!!!`);
+        }
         
         //listed all channel that this member can access
         const listedChannels = message.guild.channels.cache.filter(channel => 
-            channel.permissionsFor(message.author).has('VIEW_CHANNEL') && channel.type == 'text'
+            channel.permissionsFor(this.handler.client.user).has('VIEW_CHANNEL') 
+            && channel.type == 'text'
         );
         
         //find the channel the message is on
@@ -77,7 +86,7 @@ class ReactCommand extends Command {
                 m = undefined;
             });
             if (m == undefined) continue;
-            console.log(`Name of channel: ${m.name}`);
+            console.log(`Name of channel: ${channel.name}`);
             ok = true;
             break;
         }
