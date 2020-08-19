@@ -1,0 +1,23 @@
+{
+  "name": "react_discord",
+  "version": "1.0.0",
+  "description": "- Create a bot to react a message a given string that doesn't have duplicate letter.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/minhtung0404/react_discord.git"
+  },
+  "author": "minhtung0404",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/minhtung0404/react_discord/issues"
+  },
+  "homepage": "https://github.com/minhtung0404/react_discord#readme",
+  "dependencies": {
+    "discord-akairo": "^8.1.0",
+    "discord.js": "^12.3.1"
+  }
+}

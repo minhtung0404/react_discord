@@ -1,15 +1,16 @@
 const { AkairoClient, CommandHandler, InhibitorHandler, ListenerHandler } = require('discord-akairo');
+const {prefix, token, ownerID} = require('./config.json');
 
 class MyClient extends AkairoClient {
     constructor() {
         super({
-            ownerID: 'your ID goes here',
+            ownerID: ownerID,
         }, {
             disableMentions: 'everyone'
         });
         this.commandHandler = new CommandHandler(this, {
             directory: './commands/',
-            prefix: 'ngfam!'
+            prefix: prefix
         });
 
         this.inhibitorHandler = new InhibitorHandler(this, {
@@ -36,4 +37,6 @@ class MyClient extends AkairoClient {
 }
 
 const client = new MyClient();
-client.login('you token goes here');
+client.login(token).then((value) => {
+    client.user.setActivity(`Playing ${prefix}help`)
+});

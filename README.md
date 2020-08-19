@@ -9,6 +9,6 @@
 - Nodejs 14.8.0
 
 ## How to use
-- Install all package in package-lock.json
-- Change your bot token and your ID
+- Install all package in package.json (run `npm install`)
+- Create a `config.json` file contains your prefix, token and ownerID
 - Run `node index.js`
