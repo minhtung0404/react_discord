@@ -29,10 +29,10 @@ function checkForUnique(str){
     return true;
 }
 
-class ReactCommand extends Command {
+class RemoveCommand extends Command {
     constructor() {
-        super('react', {
-            aliases: ['react'],
+        super('remove', {
+            aliases: ['remove'],
             channel: 'guild',
             args: [
                 {
@@ -42,12 +42,12 @@ class ReactCommand extends Command {
                     id: "message",
                 }
             ],
-            description: "`Add reactions like a given string`"
+            description: "`Remove reactions to a message from a given string`"
         });
     }
 
-    usage = '`react [messageID = previous] [string]`';
-    example = '`react previous ngfamvodich`';
+    usage = '`remove [messageID = previous] [string]`';
+    example = '`remove previous ngfamvodich`';
 
     async exec(message, args) {
         if (args.messageID == null || args.message === null){
@@ -72,6 +72,10 @@ class ReactCommand extends Command {
         if (message.channel.permissionsFor(botUser).has('MANAGE_MESSAGE')){
             message.delete();
             console.log(`Message deleted!!!`);
+        }
+        else{
+            console.log(`Do not have permission!`);
+            return message.channel.send(`This bot does not have 'MANAGE_MESSAGE' permission`)
         }
         
         //listed all channel that this member can access
@@ -105,20 +109,20 @@ class ReactCommand extends Command {
             return message.channel.send('Your string is not unique or contains characters that aren\'t letters or numbers');
         }
 
-        //check if reactions have been reacted or not
+        //Removing reactions
         let userReactions = m.reactions.cache;
         for (let i = 0; i < str.length; i++) {
             if (userReactions.get(mp[str[i]]) == null) continue;
-            console.log(mp[str[i]] + ' has been reacted');
-            return message.channel.send(mp[str[i]] + ' has been reacted');
+            m.reactions.cache.get(mp[str[i]]).remove().catch(err => {
+                console.log(`Fail to delete ${mp[str[i]]} reaction`);
+                return message.channel.send(`Fail to delete ${mp[str[i]]} reaction`);
+            });
         }
 
-        //Reacting
-        console.log("React " + str);
-        for (let i = 0; i < str.length; i++) m.react(mp[str[i]]);
+        console.log("Remove " + str);
 
         return 0;
     }
 }
 
-module.exports = ReactCommand;
+module.exports = RemoveCommand;
