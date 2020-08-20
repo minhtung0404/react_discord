@@ -1,5 +1,6 @@
 const { Command } = require('discord-akairo');
 const { MessageEmbed } = require('discord.js');
+const {prefix} = require('../config.json');
 
 class HelpCommand extends Command {
     constructor() {
@@ -15,54 +16,67 @@ class HelpCommand extends Command {
     }
 
     usage = '`help or help [command]`';
-    example = '`help or help react`';
+    example = '`help or help upload`';
 
     exec(message, args) {
-        let commandlist = this.handler.modules, command = '';
-        for (let [key, value] of commandlist){
-            command += '`' + key + '`' + '\n';
-        }
-        command = command.slice(0, -1);
-        if (args.commandID == null){
-            let embed = new MessageEmbed();
+        // get the command list
+        let commandlist = this.handler.modules;
+
+        // handle help
+        if (args.commandID == null || args.commandID === 'help'){
+            // get list command as a string
+            let command = '';
+            for (let [key, value] of commandlist){
+                command += '`' + key + '`' + '\n';
+            }
+            command = command.slice(0, -1);
+
+            let embed = new MessageEmbed(), value = commandlist.get('help');
             embed = embed
                 .setTitle('Simple Bot')
                 .setColor('#0099ff')
-                .setDescription('Some commands of Simple Bot')
+                .setDescription('Some commands of Simple Bot\n' + value.description)
                 .addFields(
-                    { name: 'prefix', value: '`ngfam!`'},
+                    { name: 'prefix', value: `\`${prefix}\``},
+                    { name: 'Aliases', value: value.aliases, inline:true},
+                    { name: 'Usage', value: value.usage, inline:true},
+                    { name: 'Example', value: value.example, inline:true},
                     { name: '\u200B', value: '\u200B' },
                     { name: 'Command', value: command}
                 );
             return message.channel.send(embed);
         }
-        for (let [key, value] of commandlist){
-            if (key !== args.commandID) continue;
-            let embed = new MessageEmbed();
+
+        // handle help [command]
+        let value = commandlist.get(args.commandID).catch(err => {
+            console.log('There is no such command');
+            return message.channel.send('There is no such command');
+        });
+        let embed = new MessageEmbed();
+        embed = embed
+            .setTitle(args.commandID)
+            .setColor('#0099ff')
+            .setDescription(value.description)
+            .addFields(
+                { name: 'Aliases', value: value.aliases, inline:true}
+            );
+
+        // check if command has usage and example
+        if (typeof value.usage !== 'undefined'){
             embed = embed
-                .setTitle(key)
-                .setColor('#0099ff')
-                .setDescription(value.description)
                 .addFields(
-                    { name: 'Aliases', value: value.aliases, inline:true}
-                );
-            if (typeof value.usage !== 'undefined'){
-                embed = embed
-                    .addFields(
-                        { name: 'Usage', value: value.usage, inline:true},
-                        { name: 'Example', value: value.example, inline:true}
-                    )
-            }
-            if (typeof value.note !== 'undefined'){
-                embed = embed
-                    .addFields(
-                        { name: 'Note', value: value.note}
-                    );
-            }
-            return message.channel.send(embed);
+                    { name: 'Usage', value: value.usage, inline:true},
+                    { name: 'Example', value: value.example, inline:true}
+                )
         }
-        console.log('There is no such command');
-        return message.channel.send('There is no such command');
+
+        // check if command has note
+        if (typeof value.note !== 'undefined'){
+            embed = embed
+                .addFields(
+                    { name: 'Note', value: value.note}
+                );
+        }
     }
 }
 
