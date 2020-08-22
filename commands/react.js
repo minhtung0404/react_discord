@@ -48,7 +48,7 @@ class ReactCommand extends Command {
 
     usage = '`react [messageID = previous] [string]`';
     example = '`react previous ngfamvodich`';
-    note = '`It can remove your command if the bot has MANAGE_MESSAGE permission.`'
+    note = '`It can remove your command if the bot has MANAGE_MESSAGES permission.`'
 
     async exec(message, args) {
         if (args.messageID == null || args.message === null){

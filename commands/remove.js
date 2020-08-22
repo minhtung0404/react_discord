@@ -48,7 +48,7 @@ class RemoveCommand extends Command {
 
     usage = '`remove [messageID = previous] [string]`';
     example = '`remove previous ngfamvodich`';
-    note = '`the command can be used only if the bot has MANAGE_MESSAGE permisson`\n`It also removes your command.`'
+    note = '`the command can be used only if the bot has MANAGE_MESSAGES permisson`\n`It also removes your command.`'
 
     async exec(message, args) {
         if (args.messageID == null || args.message === null){
@@ -70,13 +70,13 @@ class RemoveCommand extends Command {
         }
 
         //delete message
-        if (message.channel.permissionsFor(botUser).has('MANAGE_MESSAGE')){
+        if (message.channel.permissionsFor(botUser).has('MANAGE_MESSAGES')){
             message.delete();
             console.log(`Message deleted!!!`);
         }
         else{
             console.log(`Do not have permission!`);
-            return message.channel.send(`This bot does not have 'MANAGE_MESSAGE' permission`)
+            return message.channel.send(`This bot does not have 'MANAGE_MESSAGES' permission`)
         }
         
         //listed all channel that this member can access

@@ -48,10 +48,11 @@ class HelpCommand extends Command {
         }
 
         // handle help [command]
-        let value = commandlist.get(args.commandID).catch(err => {
-            console.log('There is no such command');
-            return message.channel.send('There is no such command');
-        });
+        let value = commandlist.get(args.commandID);
+        if (value == undefined){
+            console.log("There is no such command!!!");
+            return message.channel.send("There is no such command!!!");
+        }
         let embed = new MessageEmbed();
         embed = embed
             .setTitle(args.commandID)
@@ -77,6 +78,7 @@ class HelpCommand extends Command {
                     { name: 'Note', value: value.note}
                 );
         }
+        message.channel.send(embed);
     }
 }
 
