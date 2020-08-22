@@ -70,14 +70,14 @@ class ReactCommand extends Command {
         }
 
         //delete message
-        if (message.channel.permissionsFor(botUser).has('MANAGE_MESSAGE')){
+        if (message.channel.permissionsFor(botUser).has('MANAGE_MESSAGES')){
             message.delete();
             console.log(`Message deleted!!!`);
         }
         
         //listed all channel that this member can access
         const listedChannels = message.guild.channels.cache.filter(channel => 
-            channel.permissionsFor(this.handler.client.user).has('VIEW_CHANNEL') 
+            channel.permissionsFor(botUser).has('VIEW_CHANNEL') 
             && channel.type == 'text'
         );
         
