@@ -38,5 +38,5 @@ class MyClient extends AkairoClient {
 
 const client = new MyClient();
 client.login(token).then((value) => {
-    client.user.setActivity(`Playing ${prefix}help`)
+    client.user.setActivity(`Playing ${prefix} help`)
 });
